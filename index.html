@@ -530,15 +530,15 @@
                 getDataAll(pageSize,pageNum){
                     axios({
                         method: 'get',
-                        url: getHost()+'/rest/getArticleList?pageSize='+pageSize+"&pageNum="+pageNum,
+                        url: getHost()+'/rest/getArticleList',
                         responseType: 'json',
                         data: {
 
                         }
                     })
                         .then( (response)=> {
-                            this.dataAll = response.data.data;
-                            this.dataAll.sort((a,b) => a.clicks < b.clicks ? 1 : -1)
+							this.dataAll = response.data.data;
+							this.dataAll.sort((a,b) => a.clicks < b.clicks ? 1 : -1)
                             for(var i= 0;i < this.dataAll.length;i++){
                                 if (i == 10){
                                     break;
