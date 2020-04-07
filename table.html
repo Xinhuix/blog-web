@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>table模块快速使用</title>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <script src="layui/layui.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="config/config.js"></script>
+
+
+</head>
+<body>
+<div id="app">
+<ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item"><a href="">最新活动</a></li>
+    <li class="layui-nav-item layui-this"><a href="">文章列表</a></li>
+    <li class="layui-nav-item"><a href="notes.html">写文章</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">解决方案</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <dd><a href="">移动模块</a></dd>
+            <dd><a href="">后台模版</a></dd>
+            <dd><a href="">电商平台</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">社区</a></li>
+</ul>
+</div>
+
+<table id="demo" lay-filter="test"></table>
+
+
+</body>
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            ,height: 500
+            ,url: 'http://127.0.0.1:8806/rest/getArticleListData' //数据接口
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+                ,{field: 'createTime', title: '创建时间', width:80}
+                ,{field: 'version', title: '版本', width:80, sort: true}
+                ,{field: 'author', title: '作者', width:80}
+                ,{field: 'title', title: '标题', width: 300}
+                ,{field: 'content', title: '内容', width: 300, sort: true}
+                ,{field: 'coverImage', title: '图片路径', width: 300, sort: true}
+                ,{field: 'clicks', title: '点击率', width: 80}
+                ,{field: 'replyNumber', title: '评论数量', width: 80, sort: true}
+                ,{title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
+            ]]
+        });
+
+    })
+</script>
+
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        access_token:"",
+        data: {
+            value:"",
+            title:"",
+            isShow: false,
+            article:{
+
+            },
+        },
+        mounted() {
+            let  resp =location.search;
+
+            const arr=resp.split("=");
+            this.access_token = arr[1]
+           /* const url ='http://127.0.0.1:8799/app-server/rest/getArticleListData?access_token='+arr[1];
+            axios({
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                url:url,
+                responseType: 'json',
+                data:{
+
+                }
+            }).then((res)=>{
+                console.log(res.data);
+                this.title = res.data.data[0].title;
+                this.value = res.data.data[0].content;
+                this.article = res.data.data[0];
+                this.isShow = true
+            }) .catch((error)=> {
+                console.log(error);
+            });
+            ;*/
+
+
+        },
+        methods: {
+
+
+        },
+    },
+       )
+</script>
+
+
+<script type='text/html' id='barDemo'>
+    <a class='layui-btn layui-btn-xs' lay-event='edit'>编辑</a>
+    <a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a>
+</script>
+
+<script>
+    layui.use(["table"], function () {
+        //   监听行工具事件
+        layui.table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.alert('确定要删除吗?', function(index){
+                    layer.msg("删除");
+                    axios({
+                        method: 'POST',
+                        url: getHost()+'/rest/deleteArticle',
+                        responseType: 'json',
+                        data: {
+                            id:data.id
+                        }
+                    })
+                        .then((response)=> {
+                            console.log(response);
+                            window.location.reload();
+                        })
+                        .catch((error)=> {
+                            console.log(error);
+                        });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                console.log("编辑");
+                console.log(data.id)
+                // let datas = JSON.stringify(data);
+                window.location.href = 'notes.html?id='+data.id;
+                console.log(datas);
+                layer.msg("编辑");
+            }
+        });
+
+    });
+    function importAdmin(data) {
+        const self= this;
+        layer.open({
+            title: '在线调试'
+            ,content: '<div class="layui-form-item">\n' +
+            '\t\t\t\t\t<label class="layui-form-label">密码框</label>\n' +
+            '\t\t\t\t\t<div class="layui-input-inline">\n' +
+            '\t\t\t\t\t\t<input id="password" autofocus="autofocus" type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">\n' +
+            '\t\t\t\t\t</div>\n' +
+            '\t\t\t\t</div>',
+            success: function(layero, index){
+                this.enterConfirm = function(event){
+                    if(event.keyCode === 13){
+                        $(".layui-layer-btn0").click();
+                        return false; //阻止系统默认回车事件
+                    }
+                };
+                $(document).on('keydown', this.enterConfirm); //监听键盘事件
+
+                // 点击确定按钮回调事件
+                $(".layui-layer-btn0").on("click",function() {
+                    console.log("peace and love");
+                })
+            },
+            end: function(){
+                $(document).off('keydown', this.enterConfirm); //解除键盘事件
+            },
+            yes: function(index, layero){
+                var password = $('#password').val();
+                if(typeof password == "undefined" || password == null || password == ""){
+                    layer.msg('密码不能为空');
+                }
+                self.toAdmin(password,index);
+            },
+
+
+        });
+
+    }
+</script>
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+        console.log(123456);
+        //…
+    });
+</script>
+</html>

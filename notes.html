@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>样例</title>
+
+  <!-- axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/leEditor.js"></script>
+    <script src="config/config.js"></script>
+
+</head>
+
+<body>
+
+<div id="app" :style="appStyle">
+  <div id="editor-main" v-if="isShow">
+        <input id="title" type="text" maxlength="30" placeholder="输入文章标题" v-model="title" >
+        <!--    <le-editor :value="value" :image-uploader="imageUploader" @uploadImg="uploadImg" @save="save"></le-editor>-->
+    <!--:value="value"-->
+        <le-editor :value="value" :image-uploader="imageUploader" @save="save"></le-editor>
+       <button type="submit" @click="submit" >
+         提交
+       </button>
+  </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+          value:"",
+          title:"",
+          isShow: true,
+          article:{
+
+          },
+          appStyle: {
+            // width: document.documentElement.clientWidth + 'px',
+            // height: document.documentElement.clientHeight + 'px'
+          },
+          imageUploader: {
+            custom: false,
+            fileType: 'file',
+            fileNameType: '',
+            imagePrefix: 'http://182.92.169.183:80/download', // 图片前缀地址
+            type: 'server',
+            url: 'http://182.92.169.183:8806/rest/uploadFile'
+          }
+        },
+        mounted() {
+            let resp = location.search;
+            console.log("初始值：" + resp);
+            let id = resp.substring(4);
+            console.log(id == "");
+            if (id != ""){
+            this.isShow = false
+            const url = getHost() + '/rest/getArticleList?id=' + id;
+            axios({
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                url: url,
+                responseType: 'json',
+                data: {}
+            }).then((res) => {
+                this.title = res.data.data[0].title;
+                this.value = res.data.data[0].content;
+                this.article = res.data.data[0];
+                this.isShow = true
+            }).catch((error) => {
+                console.log(error);
+            });
+            ;
+        }
+
+        },
+        methods: {
+          submit() {
+            const url =getHost()+'/rest/test?access_token=22222222222222222222222222222222';
+            var params = new URLSearchParams();
+            params.append('message', 'value1');       //你要传给后台的参数值 key/value
+            axios({
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+              },
+              url:url,
+              responseType: 'json',
+              data:params
+            }).then((res)=>{
+              console.log(res);
+            }) .catch((error)=> {
+              console.log(error);
+            });
+            ;
+          },
+            // 自定义
+             uploadImg: function ($vm, file, fileName) {
+               console.log($vm)
+               console.log(file)
+              console.log(fileName)
+               // 添加图片
+               // 两个参数 第一个是图片访问路径 第二个是文件名
+               $vm.insertImg(`${$vm.config.imageUploader.imagePrefix}${fileName}`, fileName)
+             },
+            save: function (val) {
+                // 获取预览文本
+                const url =getHost()+'/rest/addArticle?access_token=22222222222222222222222222222222';
+              axios({
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                url:url,
+                responseType: 'json',
+                data:{
+                  content:val,
+                  author:"徐鑫辉",
+                  title:this.title,
+                  id:this.article.id,
+                  version:this.article.version
+                }
+              }).then((res)=>{
+                 this.article = res.data.data;
+                 console.log("保存成功")
+              }) .catch((error)=> {
+                console.log(error);
+              });
+            },
+          filterLineFeedStr: function(str) {
+            return str.replace(/(\r\n|\r|\n)+/g, '')
+          }
+        },
+    })
+</script>
+<style>
+  #app {
+    width: 100%;
+    height: 620px;
+  }
+
+  /*设置编辑器宽高*/
+  #editor-main {
+    color: #2c3e50;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<style>
+  #title{
+
+    font-size:20px;
+    /* 设置输入框中字体的大小 */
+
+    height:50px;
+    /* 设置输入框的高度 */
+    width: 99.2%;
+
+    border-radius:4px;
+    /* 设置输入框的圆角的大小 */
+
+    border:1px solid #c8cccf;
+    /* 设置输入框边框的粗细和颜色 */
+
+    color:#986655;
+    /* 设置输入框中文字的颜色 */
+
+    outline:0;
+    /* 将输入框点击的时候出现的边框去掉 */
+
+    text-align:left;
+    /* 设置输入框中文字的位置 */
+
+    padding-left: 10px;
+
+    display:block;
+    /* 将输入框设置为块级元素 */
+
+    cursor: pointer;
+
+    box-shadow: 2px 2px 5px 1px #ccc;
+
+  }
+
+  input::-webkit-input-placeholder{
+    color: #986655;
+    font-size: 20px;
+  }
+</style>
+
+</html>

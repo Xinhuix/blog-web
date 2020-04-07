@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; Charset=utf-8" />
+		<meta http-equiv="Content-Language" content="zh-CN" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<title>Long博客-文章专栏</title>
+		<link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
+		<!--Layui-->
+		<link href="layui/css/layui.css" rel="stylesheet" />
+		<!--font-awesome-->
+		<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+		<!--全局样式表-->
+		<link href="css/global.css" rel="stylesheet" />
+		<link href="css/animate.min.css" rel="stylesheet" />
+		<!-- 本页样式表 -->
+		<link href="css/article.css" rel="stylesheet" />
+		<link href="css/blog.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="css/components/assets/css/github-markdown.css">
+        <script src="config/config.js"></script>
+
+
+    </head>
+
+	<body>
+		<div id="app">
+		<nav id="h" class="blog-nav layui-header">
+			<div class="blog-container">
+
+				<a href="/QQ/qqLogin" class="blog-user">
+					<i class="fa fa-qq"></i>
+				</a>
+
+				<a class="blog-logo" href="index.html">Long</a>
+
+				<ul class="layui-nav" lay-filter="nav">
+					<li class="layui-nav-item">
+						<a href="index.html"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="article.html"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="mixed_pic.html"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="timeline.html"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="about.html"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+					</li>
+					<span class="layui-nav-bar"></span></ul>
+
+				<a class="blog-navicon" href="javascript:;">
+					<i class="fa fa-navicon"></i>
+				</a>
+			</div>
+		</nav>
+
+		<div class="blog-body">
+
+			<div class="blog-container">
+				<blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow" style="visibility: visible;">
+					<a href="index.html" title="网站首页">网站首页<span class="layui-box">&gt;</span></a>
+					<a><cite>文章专栏</cite></a>
+				</blockquote>
+				<div class="blog-main">
+
+					<div id="parentArticleList" class="blog-main-left animated slideInLeft">
+						<div class="flow-default" id="articleList">
+
+
+
+							<div class="article shadow animated zoomIn" v-for="(item,index) in dataAll" :key="index" @click="toArticle(item)">
+								<div class="article-left ">
+									<img :src="'http://182.92.169.183:80/download/'+item.coverImage" alt="">
+								</div>
+								<div class="article-right">
+									<div class="article-title">
+										<span class="article_is_top">置顶</span>&nbsp;<span class="article_is_yc">原创</span>&nbsp;
+										<a >{{item.title}}</a>
+									</div>
+									<div class="article-abstract">
+										<ul>
+											<li v-html="item.content" class="list-item"></li>
+										</ul>
+									</div>
+								</div>
+								<div class="clear"></div>
+								<div class="article-footer">
+									<span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{{item.crateTime}}</span>
+									<span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;' {{item.author}}</span>
+									<span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="javascript:classifyList(10);"> Tomcat</a></span>
+									<span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;{{item.clicks}}</span>
+									<span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;{{item.replyNumber}}</span>
+								</div>
+							</div>
+
+
+
+							<div class="layui-flow-more">
+								<a href="javascript:;"><cite>加载更多</cite></a>
+							</div>
+						</div>
+					</div>
+
+					<div class="blog-main-right">
+
+						<div class="blog-search animated fadeInRight">
+							<div class="layui-form-item">
+								<div class="search-keywords  shadow">
+									<input type="text" id="keywords" name="keywords" lay-filter="searchInput" lay-verify="required" placeholder="输入关键词搜索" autocomplete="off" class="layui-input">
+								</div>
+								<div class="search-submit  shadow">
+									<a class="search-btn" lay-submit="searchForm" lay-filter="searchForm"><i class="fa fa-search"></i></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="article-category shadow categoryOut">
+							<div class="article-category-title">分类导航</div>
+							<a href="javascript:classifyList(1);">Java基础</a>
+							<a href="javascript:classifyList(2);">web开发</a>
+							<a href="javascript:classifyList(3);">开发工具</a>
+							<a href="javascript:classifyList(4);">心情日记</a>
+							<a href="javascript:classifyList(5);">SpringBoot</a>
+							<a href="javascript:classifyList(6);">Dubbo</a>
+							<a href="javascript:classifyList(7);">Redis</a>
+							<a href="javascript:classifyList(8);">Maven</a>
+							<a href="javascript:classifyList(9);">Centos</a>
+							<a href="javascript:classifyList(10);">Tomcat</a>
+							<a href="javascript:classifyList(11);">技术交流</a>
+							<div class="clear"></div>
+						</div>
+
+						<div class="layui-tab layui-tab-brief shadow animated fadeInRight" lay-filter="docDemoTabBrief">
+							<ul class="layui-tab-title">
+								<li class="layui-this">点击排行</li>
+								<li>站长推荐</li>
+							</ul>
+							<div class="layui-tab-content">
+								<div class="layui-tab-item layui-show">
+									<ul class="blog-module-ul">
+
+										<li>
+											<span>
+										<i class="layui-badge-rim layui-bg-red">1</i>
+										</span> &nbsp;&nbsp;
+											<a href="detail.html">{{firstThree[0].title}}</a>
+										</li>
+
+
+										<li>
+											<span>
+<i class="layui-badge-rim layui-bg-orange">2</i>
+</span> &nbsp;&nbsp;
+											<a href="detail.html">{{firstThree[1].title}}</a>
+										</li>
+
+
+										<li>
+											<span>
+<i class="layui-badge-rim layui-bg-green">3</i>
+</span> &nbsp;&nbsp;
+											<a href="detail.html">{{firstThree[2].title}}</a>
+										</li>
+
+										<li v-for="(item,index) in rankingData" :key="index">
+											<span>
+											<i class="layui-badge-rim">{{index+4}}</i>
+											</span> &nbsp;&nbsp;
+											<a href="detail.html">{{item.title}}</a>
+										</li>
+
+									</ul>
+								</div>
+								<div class="layui-tab-item">
+									<ul class="blog-module-ul">
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">Tomcat优化性能，JVM优化</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">Redis安装</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">Spring boot 使用 JSP</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">Spring Boot 表单验证@Valid</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">Spring boot 的核心配置文件</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">Centos7安装和配置jre1.8</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">centos7对外开放端口</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">怎么关闭eclipse对js xml的验证?</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">向百度主动推送以加快网页的收录速度！</a>
+										</li>
+										<li>
+											<span class="article_is_yc">原创</span> &nbsp;&nbsp;
+											<a href="detail.html">支付宝开发者入驻</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="category-toggle"><i class="fa fa-chevron-left"></i></div>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+
+		<footer id="f" class="blog-footer">
+			<p><span>Copyright</span><span>©</span><span>2018</span>
+				<a href="http://www.long225.cn">Long博客</a><span>Design By Longwang</span></p>
+			<p>
+				<a href="http://www.miitbeian.gov.cn" target="_blank">湘ICP备18010289号</a>
+			</p>
+		</footer>
+
+		<ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
+			<li class="layui-nav-item">
+				<a href="index.html"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+			</li>
+			<li class="layui-nav-item">
+				<a href="article.html"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+			</li>
+			<li class="layui-nav-item">
+				<a href="mixed_pic.html"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
+			</li>
+			<li class="layui-nav-item">
+				<a href="timeline.html"><i class="fa fa-road fa-fw"></i>&nbsp;点点滴滴</a>
+			</li>
+			<li class="layui-nav-item">
+				<a href="about.html"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+			</li>
+			<span class="layui-nav-bar"></span>
+		</ul>
+
+		<div class="blog-share layui-hide shareOut">
+			<div class="blog-share-body">
+				<div style="width: 200px;height:100%;">
+					<div class="bdsharebuttonbox bdshare-button-style0-32" data-bd-bind="1533783925417">
+						<a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+						<a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+						<a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+						<a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="blog-mask animated layui-hide"></div>
+
+			<form class="layui-form" action="">
+
+			</form>
+
+		</div>
+		<script src="js/jquery.min.js"></script>
+
+		<script src="layui/layui.js"></script>
+
+		<script src="js/global.js"></script>
+		<script src="js/article.js"></script>
+		<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- axios -->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	</body>
+	<script>
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+        });
+	</script>
+	<script>
+		const app = new Vue({
+			el:"#app",
+			data:{
+				dataAll:[],
+				message:"",
+				pageSize:10,
+				pageNum:1,
+				rankingData:[],
+				firstThree:[]
+			},
+			created(){
+				this.getDataAll(this.pageSize,this.pageNum)
+			},
+			methods:{
+				getDataAll(pageSize,pageNum){
+					axios({
+						method: 'get',
+						url: getHost() +'/rest/getArticleList?pageSize='+pageSize+"&pageNum="+pageNum,
+						responseType: 'json',
+						data: {
+
+						}
+					})
+							.then( (response)=> {
+								this.dataAll = response.data.data;
+								this.dataAll.sort((a,b) => a.clicks < b.clicks ? 1 : -1)
+								for(var i= 0;i < this.dataAll.length;i++){
+									if (i == 10){
+										break;
+									}
+									if ( i >= 3){
+										this.rankingData.push(this.dataAll[i])
+									} else {
+										this.firstThree.push(this.dataAll[i])
+									}
+								}
+							})
+							.catch((error)=> {
+								console.log(error);
+							});
+				},
+                toArticle(data) {
+                    window.location.href = 'detail.html?id='+ (data.id);
+                }
+			}
+		})
+
+	</script>
+<style>
+	.list-item{
+		overflow: hidden;
+		height: 60px;
+	}
+
+</style>
+</html>
