@@ -42,7 +42,7 @@
         table.render({
             elem: '#demo'
             ,height: 500
-            ,url: 'http://127.0.0.1:8806/rest/getArticleListData' //数据接口
+            ,url: 'http://127.0.0.1:8806/rest/getArticleListData?access_token='+this.access_token //数据接口
             ,page: true //开启分页
             ,cols: [[ //表头
                 {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
@@ -78,28 +78,30 @@
             let  resp =location.search;
 
             const arr=resp.split("=");
+            console.log("啊实打实");
             this.access_token = arr[1]
-           /* const url ='http://127.0.0.1:8799/app-server/rest/getArticleListData?access_token='+arr[1];
-            axios({
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json;charset=UTF-8'
-                },
-                url:url,
-                responseType: 'json',
-                data:{
+            console.log("这是token吗？"+this.access_token);
+            /* const url ='http://127.0.0.1:8799/app-server/rest/getArticleListData?access_token='+arr[1];
+             axios({
+                 method: 'GET',
+                 headers: {
+                     'Content-Type': 'application/json;charset=UTF-8'
+                 },
+                 url:url,
+                 responseType: 'json',
+                 data:{
 
-                }
-            }).then((res)=>{
-                console.log(res.data);
-                this.title = res.data.data[0].title;
-                this.value = res.data.data[0].content;
-                this.article = res.data.data[0];
-                this.isShow = true
-            }) .catch((error)=> {
-                console.log(error);
-            });
-            ;*/
+                 }
+             }).then((res)=>{
+                 console.log(res.data);
+                 this.title = res.data.data[0].title;
+                 this.value = res.data.data[0].content;
+                 this.article = res.data.data[0];
+                 this.isShow = true
+             }) .catch((error)=> {
+                 console.log(error);
+             });
+             ;*/
 
 
         },
