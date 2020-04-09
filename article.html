@@ -111,10 +111,10 @@
 						<div class="blog-search animated fadeInRight">
 							<div class="layui-form-item">
 								<div class="search-keywords  shadow">
-									<input type="text" id="keywords" name="keywords" lay-filter="searchInput" lay-verify="required" placeholder="输入关键词搜索" autocomplete="off" class="layui-input">
+									<input  type="text" id="keywords" name="keywords" lay-filter="searchInput" lay-verify="required" placeholder="输入关键词搜索" autocomplete="off" class="layui-input">
 								</div>
 								<div class="search-submit  shadow">
-									<a class="search-btn" lay-submit="searchForm" lay-filter="searchForm"><i class="fa fa-search"></i></a>
+									<a @click="findArticle" class="search-btn" lay-submit="searchForm" lay-filter="searchForm"><i class="fa fa-search"></i></a>
 								</div>
 							</div>
 						</div>
@@ -129,7 +129,7 @@
 							<a href="javascript:classifyList(6);">Dubbo</a>
 							<a href="javascript:classifyList(7);">Redis</a>
 							<a href="javascript:classifyList(8);">Maven</a>
-							<a href="javascript:classifyList(9);">Centos</a>
+							<a href="javascript:classifyList(9);">Centos</a>	
 							<a href="javascript:classifyList(10);">Tomcat</a>
 							<a href="javascript:classifyList(11);">技术交流</a>
 							<div class="clear"></div>
@@ -311,7 +311,6 @@
 				pageNum:1,
 				rankingData:[],
 				firstThree:[],
-
 			},
 			created(){
 				this.getDataAll(this.pageSize,this.pageNum)
@@ -328,6 +327,8 @@
 					})
 							.then( (response)=> {
 								this.dataAll = response.data.data;
+
+								console.log(this.dataAll);
 								this.dataAll.sort((a,b) => a.clicks < b.clicks ? 1 : -1)
 								for(var i= 0;i < this.dataAll.length;i++){
 									if (i == 10){
@@ -346,7 +347,27 @@
 				},
                 toArticle(data) {
                     window.location.href = 'detail.html?id='+ (data.id);
-                }
+                },
+				findArticle(){
+					const keywords=$("#keywords").val();
+					axios({
+						method: 'get',
+						url: getHost() +'/rest/getInquireArticle?title='+keywords,
+						responseType: 'json',
+						data: {
+
+						}
+					})
+							.then( (response)=> {
+								if (response.data.data.length != 0){
+									this.dataAll = response.data.data;
+								}
+
+							})
+							.catch((error)=> {
+								console.log(error);
+							});
+				}
 			}
 		})
 

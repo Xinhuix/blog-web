@@ -20,7 +20,7 @@
     <li class="layui-nav-item">
         <a href="javascript:;">解决方案</a>
         <dl class="layui-nav-child"> <!-- 二级菜单 -->
-            <dd><a href="">移动模块</a></dd>
+            <dd><a @click="getLabelList">标签</a></dd>
             <dd><a href="">后台模版</a></dd>
             <dd><a href="">电商平台</a></dd>
         </dl>
@@ -29,8 +29,7 @@
 </ul>
 </div>
 
-<table id="demo" lay-filter="test"></table>
-
+<table id="demo" lay-filter="test" ></table>
 
 </body>
 
@@ -69,14 +68,13 @@
         data: {
             value:"",
             title:"",
-            isShow: false,
+            isShowArticle: false,
             article:{
 
             },
         },
         mounted() {
             let  resp =location.search;
-
             const arr=resp.split("=");
             console.log("啊实打实");
             this.access_token = arr[1]
@@ -106,8 +104,22 @@
 
         },
         methods: {
+            getLabelList(){
+                axios({
+                    method: 'get',
+                    url: getHost() +'/rest/label/getLabelList',
+                    responseType: 'json',
+                    data: {
 
-
+                    }
+                })
+                    .then( (response)=> {
+                        console.log(response);
+                    })
+                    .catch((error)=> {
+                        console.log(error);
+                    });
+            }
         },
     },
        )
@@ -155,45 +167,6 @@
         });
 
     });
-    function importAdmin(data) {
-        const self= this;
-        layer.open({
-            title: '在线调试'
-            ,content: '<div class="layui-form-item">\n' +
-            '\t\t\t\t\t<label class="layui-form-label">密码框</label>\n' +
-            '\t\t\t\t\t<div class="layui-input-inline">\n' +
-            '\t\t\t\t\t\t<input id="password" autofocus="autofocus" type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">\n' +
-            '\t\t\t\t\t</div>\n' +
-            '\t\t\t\t</div>',
-            success: function(layero, index){
-                this.enterConfirm = function(event){
-                    if(event.keyCode === 13){
-                        $(".layui-layer-btn0").click();
-                        return false; //阻止系统默认回车事件
-                    }
-                };
-                $(document).on('keydown', this.enterConfirm); //监听键盘事件
-
-                // 点击确定按钮回调事件
-                $(".layui-layer-btn0").on("click",function() {
-                    console.log("peace and love");
-                })
-            },
-            end: function(){
-                $(document).off('keydown', this.enterConfirm); //解除键盘事件
-            },
-            yes: function(index, layero){
-                var password = $('#password').val();
-                if(typeof password == "undefined" || password == null || password == ""){
-                    layer.msg('密码不能为空');
-                }
-                self.toAdmin(password,index);
-            },
-
-
-        });
-
-    }
 </script>
 
 <script>
