@@ -142,10 +142,11 @@
                             </div>
                             <div class="clear"></div>
                             <div class="article-footer">
-                                <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{{item.crateTime}}</span>
+                                <span>
+                                    <i class="fa fa-clock-o" ></i>&nbsp;&nbsp;{{item.createTime}}</span>
                                 <span class="article-author"><i
-                                        class="fa fa-user"></i>&nbsp;&nbsp;' {{item.author}}</span>
-                                <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="javascript:classifyList(10);"> Tomcat</a></span>
+                                        class="fa fa-user"></i> {{item.author}}</span>
+                                <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="javascript:classifyList(10);"> {{item.articleName}}</a></span>
                                 <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;{{item.clicks}}</span>
                                 <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;{{item.replyNumber}}</span>
                             </div>
@@ -576,6 +577,8 @@
                                 this.firstThree.push(this.dataAll[i])
                             }
                         }
+
+                        console.log(this.dataAll);
                     })
                     .catch((error) => {
                         console.log(error);

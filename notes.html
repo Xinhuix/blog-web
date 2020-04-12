@@ -13,14 +13,38 @@
     <script src="js/leEditor.js"></script>
     <script src="config/config.js"></script>
     <script src="utils/checkUtil.js"></script>
-
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <script src="layui/layui.js"></script>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <!--Layui-->
+    <link href="layui/css/layui.css" rel="stylesheet"/>
+    <script src="layui/layui.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/index.js"></script>
 </head>
 
 <body>
 
 <div id="app" :style="appStyle">
   <div id="editor-main" v-if="isShow">
+
         <input id="title" type="text" maxlength="30" placeholder="输入文章标题" v-model="title" >
+      <ul class="layui-nav" lay-filter="">
+          <li class="layui-nav-item">
+              <a type="button" id="articleType"  style="width: auto;display: inline"/>文章类型</a>
+              <ul  style="display: inline">
+                  <li style="display: inline; justify-content: space-between;align-items: center;width: 50px;height: 100%;text-align: center" v-for="(item,index) in labelListTwo" :key="index" >
+                      <span style="width: 80px;display: inline-block;color: #5FB878; position: relative"  @click="deleteLabel(item)">
+                          {{item.name}}
+                      </span>
+                  </li>
+              </ul>
+              <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                  <a @click="addLabel(item)" v-for="(item,index) in labelList" :key="index" >{{item.name}}</a>
+              </dl>
+          </li>
+      </ul>
         <!--    <le-editor :value="value" :image-uploader="imageUploader" @uploadImg="uploadImg" @save="save"></le-editor>-->
     <!--:value="value"-->
         <le-editor :value="value" :image-uploader="imageUploader" @save="save"></le-editor>
@@ -37,6 +61,9 @@
           value:"",
           title:"",
           isShow: true,
+          labelList:[],
+          articleType:"文章类型",
+          labelListTwo:[],
           article:{
 
           },
@@ -53,7 +80,12 @@
             url: 'http://182.92.169.183:8806/rest/uploadFile'
           }
         },
+        created(){
+            this.getLabelList();
+        },
         mounted() {
+            this.getLabelList();
+            console.log(this.labelList);
             let resp = location.search;
             console.log("初始值：" + resp);
             let id = resp.substring(4);
@@ -102,17 +134,35 @@
             ;
           },
             // 自定义
-             uploadImg: function ($vm, file, fileName) {
-               console.log($vm)
-               console.log(file)
-              console.log(fileName)
-               // 添加图片
+             uploadImg: function (event) {
+               console.log(event)
+
+                 // 添加图片
                // 两个参数 第一个是图片访问路径 第二个是文件名
                $vm.insertImg(`${$vm.config.imageUploader.imagePrefix}${fileName}`, fileName)
              },
+            addLabel(event) {
+                if (this.labelListTwo.some( item => item.name === event.name)) {
+                    layer.msg('请勿选择相同文章类型');
+                    return;
+                }
+
+                this.labelListTwo.push(event);
+            }
+             ,
             save: function (val) {
+
+             if (this.labelListTwo.length == 0){
+                 layer.msg('请选择文章类型');
+                 return;
+             }
+                const value = [];
+                for (var i = 0; i < this.labelListTwo.length; i++) {
+                    value.push(this.labelListTwo[i].id);
+                }
+                const label = value.join(",");
                 // 获取预览文本
-                const url =getHost()+'/rest/addArticle?access_token=22222222222222222222222222222222';
+              const url =getHost()+'/rest/addArticle?access_token=22222222222222222222222222222222';
               axios({
                 method: 'post',
                 headers: {
@@ -125,7 +175,8 @@
                   author:"徐鑫辉",
                   title:this.title,
                   id:this.article.id,
-                  version:this.article.version
+                  version:this.article.version,
+                  articleType:label
                 }
               }).then((res)=>{
                  this.article = res.data.data;
@@ -136,9 +187,34 @@
             },
           filterLineFeedStr: function(str) {
             return str.replace(/(\r\n|\r|\n)+/g, '')
-          }
+          },
+           deleteLabel(event){
+               var index = this.labelListTwo.indexOf(event);
+               if (index > -1) {
+                   this.labelListTwo.splice(index, 1);
+               }
+
+           },
+            getLabelList(){
+                axios({
+                    method: 'get',
+                    url: getHost() +'/rest/label/getLabelList',
+                    responseType: 'json',
+                    data: {
+
+                    }
+                })
+                    .then( (response)=> {
+                        this.labelList = response.data.data
+                        console.log(this.labelList);
+                    })
+                    .catch((error)=> {
+                        console.log(error);
+                    });
+            }
         },
-    })
+    });
+
 </script>
 <style>
   #app {
@@ -194,6 +270,25 @@
     color: #986655;
     font-size: 20px;
   }
-</style>
 
+  .closeLabel{
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      border: 1px solid;
+      position: absolute;
+      bottom: 50%;
+  }
+</style>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>
 </html>

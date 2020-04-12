@@ -70,7 +70,7 @@
 					<blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow" style="visibility: visible;">
 						<a href="index.html" title="网站首页">网站首页<span class="layui-box">&gt;</span></a>
 						<a href="article.html" title="文章专栏">文章专栏<span class="layui-box">&gt;</span></a>
-						<a><cite class="title">Spring boot 的核心配置文件</cite></a>
+						<a><cite class="title">{{article.title}}</cite></a>
 					</blockquote>
 					<div class="blog-main">
 
@@ -377,15 +377,38 @@
                     });
                     ;
                 },
-                // 自定义
-                // uploadImg: function ($vm, file, fileName) {
-                //   console.log($vm)
-                //   console.log(file)
-                //   console.log(fileName)
-                //   // 添加图片
-                //   // 两个参数 第一个是图片访问路径 第二个是文件名
-                //   $vm.insertImg(`${$vm.config.imageUploader.imagePrefix}${fileName}`, fileName)
-                // },
+				getLabelList(){
+					axios({
+						method: 'get',
+						url: getHost() +'/rest/label/getLabelList',
+						responseType: 'json',
+						data: {
+
+						}
+					})
+							.then( (response)=> {
+								console.log(response);
+							})
+							.catch((error)=> {
+								console.log(error);
+							});
+				},
+				getLabelList(){
+					axios({
+						method: 'get',
+						url: getHost() +'/rest/label/getLabelList',
+						responseType: 'json',
+						data: {
+
+						}
+					})
+							.then( (response)=> {
+								console.log(response);
+							})
+							.catch((error)=> {
+								console.log(error);
+							});
+				},
                 save: function (val) {
                     // 获取预览文本
                     console.log(321312313)
