@@ -136,8 +136,8 @@
 
  <div class="article-category shadow ">
 <div class="article-category-title ">分类导航</div>
-<a href="javascript:classifyList(1); ">Java基础</a><a href="javascript:classifyList(2); ">web开发</a><a href="javascript:classifyList(3); ">开发工具</a><a href="javascript:classifyList(4); ">心情日记</a><a href="javascript:classifyList(5); ">SpringBoot</a><a href="javascript:classifyList(6); ">Dubbo</a><a href="javascript:classifyList(7); ">Redis</a><a href="javascript:classifyList(8); ">Maven</a><a href="javascript:classifyList(9); ">Centos</a><a href="javascript:classifyList(10); ">Tomcat</a><a href="javascript:classifyList(11); ">技术交流</a>
-<div class="clear "></div>
+	 <a @click="findLable(item)"  v-for="(item,index) in labelList" :key="index" >{{item.name}}</a>
+	 <div class="clear "></div>
 </div>
 <div class="blog-module shadow ">
 <div class="blog-module-title ">相似文章</div>
@@ -317,6 +317,7 @@
             data: {
                 value:"",
                 title:"",
+				labelList:[],
                 article:{
 
                 },
@@ -333,6 +334,9 @@
                     url: 'http://182.92.169.183:8806/rest/uploadFile'
                 }
             },
+			created() {
+				this.getLabelList();
+			},
 			mounted() {
                 let resp = location.search;
                 console.log("初始值：" + resp);
@@ -377,7 +381,8 @@
                     });
                     ;
                 },
-				getLabelList(){
+				getLabelList(event){
+
 					axios({
 						method: 'get',
 						url: getHost() +'/rest/label/getLabelList',
@@ -387,23 +392,7 @@
 						}
 					})
 							.then( (response)=> {
-								console.log(response);
-							})
-							.catch((error)=> {
-								console.log(error);
-							});
-				},
-				getLabelList(){
-					axios({
-						method: 'get',
-						url: getHost() +'/rest/label/getLabelList',
-						responseType: 'json',
-						data: {
-
-						}
-					})
-							.then( (response)=> {
-								console.log(response);
+								this.labelList = response.data.data
 							})
 							.catch((error)=> {
 								console.log(error);
@@ -436,9 +425,13 @@
                     });
                 },
                 filterLineFeedStr: function(str) {
-                    return str.replace(/(\r\n|\r|\n)+/g, '')
-                }
-            },
+					return str.replace(/(\r\n|\r|\n)+/g, '')
+                },
+				findLable(event){
+					window.location.href = 'article.html?id=' + event.id;
+				}
+            }
+
         })
     </script>
     <style>
