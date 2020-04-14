@@ -86,13 +86,12 @@
 									<span>浏览量：{{article.clicks}}</span>
 
 								</div>
-								<!--<div class="markdown-body" style="font-size: 16px;">
+							<!--	<div class="markdown-body" style="font-size: 16px;">
 									<ul class="list">
 										<li v-html="article.content"><li>
 									</ul>
 								</div>-->
-			<le-preview ref="md-preview" :is-md="true" :value="mdContent" :hljs-css="hljsCss"></le-preview>
-
+                                <le-preview ref="md-preview" :is-md="true" :value="mdContent" ></le-preview>
 							</div>
 
 
@@ -318,6 +317,8 @@
             data: {
                 value:"",
                 title:"",
+                mdContent:"",
+                hljsCss: 'agate',
                 article:{
 
                 },
@@ -352,6 +353,8 @@
                 }).then((res)=>{
                     console.log(res);
                     this.article = res.data.data[0];
+                    this.mdContent = this.article.content;
+                    console.log(this.article);
                 }) .catch((error)=> {
                     console.log(error);
                 });
@@ -379,7 +382,6 @@
                     ;
                 },
 				getLabelList(event){
-
 					axios({
 						method: 'get',
 						url: getHost() +'/rest/label/getLabelList',
@@ -389,7 +391,8 @@
 						}
 					})
 							.then( (response)=> {
-								this.labelList = response.data.data
+								this.labelList = response.data.data;
+                                this.mdContent = response.data.data;
 							})
 							.catch((error)=> {
 								console.log(error);
