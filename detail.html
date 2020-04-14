@@ -86,11 +86,12 @@
 									<span>浏览量：{{article.clicks}}</span>
 
 								</div>
-								<div class="markdown-body" style="font-size: 16px;">
+								<!--<div class="markdown-body" style="font-size: 16px;">
 									<ul class="list">
 										<li v-html="article.content"><li>
 									</ul>
-								</div>
+								</div>-->
+			<le-preview ref="md-preview" :is-md="true" :value="mdContent" :hljs-css="hljsCss"></le-preview>
 
 							</div>
 
@@ -317,6 +318,7 @@
             data: {
                 value:"",
                 title:"",
+                mdContent:"",
                 article:{
 
                 },
@@ -351,6 +353,7 @@
                 }).then((res)=>{
                     console.log(res);
                     this.article = res.data.data[0];
+                    this.mdContent = this.article.content;
                 }) .catch((error)=> {
                     console.log(error);
                 });
