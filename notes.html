@@ -185,7 +185,8 @@
                   title:this.title,
                   id:this.article.id,
                   version:this.article.version,
-                  articleType:label
+                  articleType:label,
+                  html:val
                 }
               }).then((res)=>{
                  this.article = res.data.data;
