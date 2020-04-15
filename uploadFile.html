@@ -1,0 +1,197 @@
+<html lang="en">
+<head>
+    <title>Xinhxu;</title>
+    <meta http-equiv="Content-Type" content="text/html; Charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <title>Long博客-关于本站</title>
+    <!-- 设置请求头 解决跨域 -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="config/config.js"></script>
+</head>
+<nav class="navbar navbar-default"></nav>
+
+
+<div id="app">
+
+    <!--
+        <img src="http://182.92.169.183:/pictures/8231a435-1240-445c-a5bb-dba646f68674.gif" alt="" style="height: 330px;">
+    -->
+
+
+    <div class="news-section" id="agileinfo-news">
+        <div class="container">
+            <div class="agileits-news-section-head text-center">
+                <h3 class="agileits_head">保存文件</h3>
+                <span class="w3-line">
+            </span>
+                <div>
+                    <form>
+                        <h1>{{message}}</h1>
+                        <input type="file" @change="getFile($event)" class="file" name="file" style="margin:0 auto;"
+                               required="required"><br><br>
+                        <label>备注:</label>
+                        <input type="text" v-model="message" class="a-upload">
+                        <input type="button" value="提交" class="a-upload" @click="submit($event)"/>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+</div>
+
+<script>
+
+
+    app = new Vue({
+        el: "#app",
+        data: {
+            dataAll: [],
+            ip: "182.92.169.183",
+            port: "8806",
+            message: "",
+            pageSize: 10,
+            pageNum: 1
+        },
+        beforeCreate() {
+
+        },
+        created() {
+            this.getDataAll(this.pageSize, this.pageNum)
+        },
+        mounted() {
+            window.addEventListener("scroll", this.handleScroll);
+        }
+        ,
+        methods: {
+            getDataAll(pageSize, pageNum) {
+                axios({
+                    method: 'get',
+                    url: 'http://' + this.ip + ':' + this.port + '/rest/home/getDataAll?pageSize=' + pageSize + "&pageNum=" + pageNum,
+                    responseType: 'json',
+                    data: {}
+                })
+                    .then((response) => {
+                        if (this.dataAll.length != 0) {
+                            for (var i = 0; i < response.data.data.items.list.length; i++) {
+                                this.dataAll.push(response.data.data.items.list[i]);
+                            }
+                        } else {
+                            this.dataAll = response.data.data.items.list
+                        }
+                        this.pageSize = pageSize
+                        this.pageNum = pageNum
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            },
+            getFile: function (event) {
+                this.file = event.target.files[0];
+            },
+            submit: function (event) {
+                //阻止元素发生默认的行为
+                event.preventDefault();
+                let formData = new FormData();
+                formData.append("file", this.file);
+                axios.post('http://' + this.ip + ':' + this.port + '/rest/home/uploadFile?remark=' + this.message, formData)
+                    .then(function (response) {
+                        window.location.reload();
+                    })
+                    .catch(function (error) {
+                        alert("上传失败");
+                        console.log(error);
+                        window.location.reload();
+                    });
+            },
+        }
+
+
+    })
+</script>
+
+<style>
+    /*样式1*/
+    .a-upload {
+        padding: 0px 20px;
+        height: 30px;
+        line-height: 20px;
+        position: relative;
+        cursor: pointer;
+        color: #888;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block;
+        *display: inline;
+        *zoom: 1
+    }
+
+    .a-upload input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer
+    }
+
+    .a-upload:hover {
+        color: #444;
+        background: #eee;
+        border-color: #ccc;
+        text-decoration: none
+    }
+
+    /*样式2*/
+    .file {
+        position: relative;
+        display: inline-block;
+        background: #D0EEFF;
+        border: 1px solid #99D3F5;
+        border-radius: 4px;
+        padding: 4px 12px;
+        overflow: hidden;
+        color: #1E88C7;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 20px;
+    }
+
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
+
+</style>
+
+</body>
+</html>
