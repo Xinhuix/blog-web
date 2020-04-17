@@ -14,7 +14,7 @@ var datas = [{
 				"content": "<p>修复：</p><p>1.更换留言板加载动画以及修复加载留言数据时因同步而导致卡顿的问题！</p><p>2.优化网站操作流畅性！</p>"
 			}, {
 				"create_time": "07月13日 10:03",
-				"content": "Long博客更新为v2.0,修改了部分样式，移除了音乐播放器插件。"
+				"content": "Remember博客更新为v2.0,修改了部分样式，移除了音乐播放器插件。"
 			}, {
 				"create_time": "07月12日 09:27",
 				"content": "<p><span>本站接入QQ登录，方便快捷~美滋滋<img src=\"http://www.long225.cn/static/fsLayui/plugins/layui/images/face/1.gif\" alt=\"[嘻嘻]\"></span></p>"
