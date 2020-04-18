@@ -2,19 +2,18 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>样例</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>样例</title>
 
-  <!-- axios -->
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
     <script src="js/vue.js"></script>
     <script src="js/leEditor.js"></script>
     <link href="layui/css/layui.css" rel="stylesheet"/>
-
 
 
     <script src="layui/layui.js"></script>
@@ -31,194 +30,193 @@
 <body>
 
 <div id="app" :style="appStyle">
-  <div id="editor-main" v-if="isShow">
+    <div id="editor-main" v-if="isShow">
 
-        <input id="title" type="text" maxlength="30" placeholder="输入文章标题" v-model="title" >
-      <ul class="layui-nav" lay-filter="">
-          <li class="layui-nav-item">
-              <a type="button" id="articleType"  style="width: auto;display: inline"/>文章类型</a>
-              <ul  style="display: inline">
-                  <li style="display: inline; justify-content: space-between;align-items: center;width: 50px;height: 100%;text-align: center" v-for="(item,index) in labelListTwo" :key="index" >
-                      <span style="width: 80px;display: inline-block;color: #5FB878; position: relative"  @click="deleteLabel(item)">
+        <input id="title" type="text" maxlength="30" placeholder="输入文章标题" v-model="title">
+        <ul class="layui-nav" lay-filter="">
+            <li class="layui-nav-item">
+                <a type="button" id="articleType" style="width: auto;display: inline"/>文章类型</a>
+                <ul style="display: inline">
+                    <li style="display: inline; justify-content: space-between;align-items: center;width: 50px;height: 100%;text-align: center"
+                        v-for="(item,index) in labelListTwo" :key="index">
+                      <span style="width: 80px;display: inline-block;color: #5FB878; position: relative"
+                            @click="deleteLabel(item)">
                           {{item.name}}
                       </span>
-                  </li>
-              </ul>
-              <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                  <a @click="addLabel(item)" v-for="(item,index) in labelList" :key="index" >{{item.name}}</a>
-              </dl>
-          </li>
-      </ul>
+                    </li>
+                </ul>
+                <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                    <a @click="addLabel(item)" v-for="(item,index) in labelList" :key="index">{{item.name}}</a>
+                </dl>
+            </li>
+        </ul>
         <!--    <le-editor :value="value" :image-uploader="imageUploader" @uploadImg="uploadImg" @save="save"></le-editor>-->
-    <!--:value="value"-->
+        <!--:value="value"-->
         <le-editor v-model="value" :image-uploader="imageUploader" :hljs-css="hljsCss" @save="save"></le-editor>
 
 
-       <button type="submit" @click="submit" >
-         提交
-       </button>
-  </div>
+        <button type="submit" @click="submit">
+            提交
+        </button>
+    </div>
 </div>
 </body>
 <script>
     var app = new Vue({
         el: '#app',
         data: {
-          value:"",
-          title:"",
-          hljsCss: 'agate',
-          isShow: true,
-          labelList:[],
-          articleType:"文章类型",
-          labelListTwo:[],
-          article:{
-
-          },
-          appStyle: {
-            // width: document.documentElement.clientWidth + 'px',
-            // height: document.documentElement.clientHeight + 'px'
-          },
-          imageUploader: {
-            custom: false,
-            fileType: 'file',
-            fileNameType: '',
-            imagePrefix: 'http://182.92.169.183:80/download', // 图片前缀地址
-            type: 'server',
-            url: 'http://182.92.169.183:8806/rest/uploadFile'
-          }
+            value: "",
+            title: "",
+            hljsCss: 'agate',
+            isShow: true,
+            labelList: [],
+            articleType: "文章类型",
+            labelListTwo: [],
+            article: {},
+            appStyle: {},
+            imageUploader: {
+                custom: false,
+                fileType: 'file',
+                fileNameType: '',
+                imagePrefix: 'http://182.92.169.183:80/download', // 图片前缀地址
+                type: 'server',
+                url: 'http://182.92.169.183:8806/rest/uploadFile'
+            }
         },
         created(){
             this.getLabelList();
         },
         mounted() {
-            this.getLabelList();
-            console.log(this.labelList);
             let resp = location.search;
             console.log("初始值：" + resp);
             let id = resp.substring(4);
             console.log(id);
-            if (isNumber(id)){
-            this.isShow = false
-            const url = getHost() + '/rest/getArticleList?id=' + id;
-            axios({
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json;charset=UTF-8'
-                },
-                url: url,
-                responseType: 'json',
-                data: {}
-            }).then((res) => {
-                this.title = res.data.data[0].title;
-                this.value = res.data.data[0].content;
-                this.article = res.data.data[0];
-                this.isShow = true
-            }).catch((error) => {
-                console.log(error);
-            });
-            ;
-        }
-
+            if (isNumber(id)) {
+               // this.isShow = false
+                const url = getHost() + '/rest/getArticleList?id=' + id;
+                axios({
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    url: url,
+                    responseType: 'json',
+                    data: {}
+                }).then((res) => {
+                    this.title = res.data.data[0].title;
+                    this.value = res.data.data[0].content;
+                    this.article = res.data.data[0];
+                    this.isShow = true;
+                    const label = res.data.data[0].articleType.split(",");
+                    const articleName = res.data.data[0].articleName.split(",");
+                    for (i = 0; i < label.length; i++) {
+                        for (j = 0; j < this.labelList.length; j++) {
+                            if (label[i] === this.labelList[j].id + '') {
+                                var o = {};
+                                o.name = articleName[i];
+                                o.id = label[i];
+                                this.labelListTwo.push(o);
+                            }
+                        }
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
+                ;
+            }
         },
         methods: {
-          submit() {
-            const url =getHost()+'/rest/test?access_token=22222222222222222222222222222222';
-            var params = new URLSearchParams();
-            params.append('message', 'value1');       //你要传给后台的参数值 key/value
-            axios({
-              method: 'post',
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              },
-              url:url,
-              responseType: 'json',
-              data:params
-            }).then((res)=>{
-              console.log(res);
-            }) .catch((error)=> {
-              console.log(error);
-            });
-            ;
-          },
+            submit() {
+                const url = getHost() + '/rest/test?access_token=22222222222222222222222222222222';
+                var params = new URLSearchParams();
+                params.append('message', 'value1');       //你要传给后台的参数值 key/value
+                axios({
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    url: url,
+                    responseType: 'json',
+                    data: params
+                }).then((res) => {
+                    console.log(res);
+                }).catch((error) => {
+                    console.log(error);
+                });
+                ;
+            },
             // 自定义
-             uploadImg: function (event) {
-               console.log(event)
+            uploadImg: function (event) {
+                console.log(event)
 
-                 // 添加图片
-               // 两个参数 第一个是图片访问路径 第二个是文件名
-               $vm.insertImg(`${$vm.config.imageUploader.imagePrefix}${fileName}`, fileName)
-             },
+                // 添加图片
+                // 两个参数 第一个是图片访问路径 第二个是文件名
+                $vm.insertImg(`${$vm.config.imageUploader.imagePrefix}${fileName}`, fileName)
+            },
             addLabel(event) {
-                if (this.labelListTwo.some( item => item.name === event.name)) {
+                if (this.labelListTwo.some(item => item.name === event.name)) {
                     layer.msg('请勿选择相同文章类型');
                     return;
                 }
-
                 this.labelListTwo.push(event);
             }
-             ,
+            ,
             save: function (val) {
-
-
-                console.log(this.value);
-                if (this.labelListTwo.length == 0){
-                 layer.msg('请选择文章类型');
-                 return;
-             }
+                if (this.labelListTwo.length == 0) {
+                    layer.msg('请选择文章类型');
+                    return;
+                }
                 const value = [];
                 for (var i = 0; i < this.labelListTwo.length; i++) {
                     value.push(this.labelListTwo[i].id);
                 }
                 const label = value.join(",");
                 // 获取预览文本
-              const url =getHost()+'/rest/addArticle?access_token=22222222222222222222222222222222';
-              axios({
-                method: 'post',
-                headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
-                },
-                url:url,
-                responseType: 'json',
-                data:{
-                  content:this.value,
-                  author:"徐鑫辉",
-                  title:this.title,
-                  id:this.article.id,
-                  version:this.article.version,
-                  articleType:label,
-                  html:val
-                }
-              }).then((res)=>{
-                 this.article = res.data.data;
-                 console.log("保存成功")
-              }) .catch((error)=> {
-                console.log(error);
-              });
-            },
-          filterLineFeedStr: function(str) {
-            return str.replace(/(\r\n|\r|\n)+/g, '')
-          },
-           deleteLabel(event){
-               var index = this.labelListTwo.indexOf(event);
-               if (index > -1) {
-                   this.labelListTwo.splice(index, 1);
-               }
-
-           },
-            getLabelList(){
+                const url = getHost() + '/rest/addArticle?access_token=22222222222222222222222222222222';
                 axios({
-                    method: 'get',
-                    url: getHost() +'/rest/label/getLabelList',
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    url: url,
                     responseType: 'json',
                     data: {
-
+                        content: this.value,
+                        author: "徐鑫辉",
+                        title: this.title,
+                        id: this.article.id,
+                        version: this.article.version,
+                        articleType: label,
+                        html: val
                     }
+                }).then((res) => {
+                    this.article = res.data.data;
+                    console.log("保存成功")
+                }).catch((error) => {
+                    console.log(error);
+                });
+            },
+            filterLineFeedStr: function (str) {
+                return str.replace(/(\r\n|\r|\n)+/g, '')
+            },
+            deleteLabel(event) {
+                var index = this.labelListTwo.indexOf(event);
+                if (index > -1) {
+                    this.labelListTwo.splice(index, 1);
+                }
+
+            },
+            getLabelList() {
+                axios({
+                    method: 'get',
+                    url: getHost() + '/rest/label/getLabelList',
+                    responseType: 'json',
+                    data: {}
                 })
-                    .then( (response)=> {
-                        this.labelList = response.data.data
-                        console.log(this.labelList);
+                    .then((response) => {
+                        this.labelList = response.data.data;
                     })
-                    .catch((error)=> {
+                    .catch((error) => {
                         console.log(error);
                     });
             }
@@ -227,75 +225,75 @@
 
 </script>
 <style>
-  #app {
-    width: 100%;
-    height: 620px;
-  }
+    #app {
+        width: 100%;
+        height: 620px;
+    }
 
-  /*设置编辑器宽高*/
-  #editor-main {
-    color: #2c3e50;
-    width: 100%;
-    height: 100%;
-  }
+    /*设置编辑器宽高*/
+    #editor-main {
+        color: #2c3e50;
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 <style>
-  #title{
+    #title {
 
-    font-size:20px;
-    /* 设置输入框中字体的大小 */
+        font-size: 20px;
+        /* 设置输入框中字体的大小 */
 
-    height:50px;
-    /* 设置输入框的高度 */
-    width: 99.2%;
+        height: 50px;
+        /* 设置输入框的高度 */
+        width: 99.2%;
 
-    border-radius:4px;
-    /* 设置输入框的圆角的大小 */
+        border-radius: 4px;
+        /* 设置输入框的圆角的大小 */
 
-    border:1px solid #c8cccf;
-    /* 设置输入框边框的粗细和颜色 */
+        border: 1px solid #c8cccf;
+        /* 设置输入框边框的粗细和颜色 */
 
-    color:#986655;
-    /* 设置输入框中文字的颜色 */
+        color: #986655;
+        /* 设置输入框中文字的颜色 */
 
-    outline:0;
-    /* 将输入框点击的时候出现的边框去掉 */
+        outline: 0;
+        /* 将输入框点击的时候出现的边框去掉 */
 
-    text-align:left;
-    /* 设置输入框中文字的位置 */
+        text-align: left;
+        /* 设置输入框中文字的位置 */
 
-    padding-left: 10px;
+        padding-left: 10px;
 
-    display:block;
-    /* 将输入框设置为块级元素 */
+        display: block;
+        /* 将输入框设置为块级元素 */
 
-    cursor: pointer;
+        cursor: pointer;
 
-    box-shadow: 2px 2px 5px 1px #ccc;
+        box-shadow: 2px 2px 5px 1px #ccc;
 
-  }
+    }
 
-  input::-webkit-input-placeholder{
-    color: #986655;
-    font-size: 20px;
-  }
+    input::-webkit-input-placeholder {
+        color: #986655;
+        font-size: 20px;
+    }
 
-  .closeLabel{
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      color: #000;
-      border: 1px solid;
-      position: absolute;
-      bottom: 50%;
-  }
+    .closeLabel {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        color: #000;
+        border: 1px solid;
+        position: absolute;
+        bottom: 50%;
+    }
 </style>
 <script>
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
-    layui.use('element', function(){
+    layui.use('element', function () {
         var element = layui.element;
 
         //…
