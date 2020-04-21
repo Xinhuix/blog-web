@@ -1,68 +1,74 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; Charset=utf-8" />
-    <meta http-equiv="Content-Language" content="zh-CN" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; Charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <title>Remember-照片墙</title>
-    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon"/>
     <!--Layui-->
-    <link href="layui/css/layui.css" rel="stylesheet" />
+    <link href="layui/css/layui.css" rel="stylesheet"/>
     <!--font-awesome-->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <!--全局样式表-->
-    <link href="css/global.css" rel="stylesheet" />
-    <link href="css/animate.min.css" rel="stylesheet" />
+    <link href="css/global.css" rel="stylesheet"/>
+    <link href="css/animate.min.css" rel="stylesheet"/>
     <!-- 本页样式表 -->
-    <link href="css/mixed.css" rel="stylesheet" />
+    <link href="css/mixed.css" rel="stylesheet"/>
+    <script src="js/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="config/config.js"></script>
+
+
 </head>
 <body>
-   <!-- 导航 -->
+<div id="app">
+    <!-- 导航 -->
     <nav id="h" class="blog-nav layui-header">
-			<div class="blog-container">
+        <div class="blog-container">
 
-				<a href="/QQ/qqLogin" class="blog-user">
-					<i class="fa fa-qq"></i>
-				</a>
+            <a href="/QQ/qqLogin" class="blog-user">
+                <i class="fa fa-qq"></i>
+            </a>
 
-				<a class="blog-logo" href="index.html">Xinhxu</a>
+            <a class="blog-logo" href="index.html">Xinhxu</a>
 
-				<ul class="layui-nav" lay-filter="nav">
-					<li class="layui-nav-item">
-						<a href="index.html"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
-					</li>
-					<li class="layui-nav-item">
-						<a href="article.html"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
-					</li>
-					<li class="layui-nav-item">
-						<a href="mixed_pic.html"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
-					</li>
-					<li class="layui-nav-item">
-						<a href="timeline.html"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
-					</li>
-					<li class="layui-nav-item">
-						<a href="about.html"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
-					</li>
-					<span class="layui-nav-bar"></span></ul>
+            <ul class="layui-nav" lay-filter="nav">
+                <li class="layui-nav-item">
+                    <a href="index.html"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="article.html"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="mixed_pic.html"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="timeline.html"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="about.html"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+                </li>
+                <span class="layui-nav-bar"></span></ul>
 
-				<a class="blog-navicon" href="javascript:;">
-					<i class="fa fa-navicon"></i>
-				</a>
-			</div>
-		</nav>
+            <a class="blog-navicon" href="javascript:;">
+                <i class="fa fa-navicon"></i>
+            </a>
+        </div>
+    </nav>
     <!-- 主体（一般只改变这里的内容） -->
     <div class="blog-body">
         <!-- 这个一般才是真正的主体内容 -->
         <div class="blog-container">
-        	<blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
+            <blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
                 <a href="index.html" title="网站首页">网站首页</a>
                 <a><cite>杂七杂八</cite></a>
             </blockquote>
             <div class="blog-main">
                 <div class="child-nav shadow">
-	                <span class="child-nav-btn child-nav-btn-this">照片墙</span>
-	                <span class="child-nav-btn" onclick="layer.msg('暂未开发');">其他作品</span>
-	                <span class="child-nav-btn" onclick="layer.msg('暂未开发');">游戏墙</span>
+                    <span class="child-nav-btn child-nav-btn-this">照片墙</span>
+                    <span class="child-nav-btn" onclick="layer.msg('暂未开发');">其他作品</span>
+                    <span class="child-nav-btn" onclick="layer.msg('暂未开发');">游戏墙</span>
                 </div>
                 <div class="mixed-main" id="pic"></div>
             </div>
@@ -70,29 +76,30 @@
         </div>
     </div>
     <!-- 底部 -->
-   <footer id="f " class="blog-footer ">
-	   <p><span>Copyright</span><span>©</span><span>2018</span><a href="http://www.xinhxu.com">Xinhxu</a><span>Remember</span></p>
-	   <p><a href="http://www.miitbeian.gov.cn " target="_blank ">湘ICP备18010289号</a></p>
-   </footer>
+    <footer id="f " class="blog-footer ">
+        <p><span>Copyright</span><span>©</span><span>2018</span><a
+                href="http://www.xinhxu.com">Xinhxu</a><span>Remember</span></p>
+        <p><a href="http://www.miitbeian.gov.cn " target="_blank ">湘ICP备18010289号</a></p>
+    </footer>
     <!--侧边导航-->
     <ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
-			<li class="layui-nav-item">
-				<a href="index.html"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
-			</li>
-			<li class="layui-nav-item">
-				<a href="article.html"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
-			</li>
-			<li class="layui-nav-item">
-				<a href="mixed_pic.html"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
-			</li>
-			<li class="layui-nav-item">
-				<a href="timeline.html"><i class="fa fa-road fa-fw"></i>&nbsp;点点滴滴</a>
-			</li>
-			<li class="layui-nav-item">
-				<a href="about.html"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
-			</li>
-			<span class="layui-nav-bar"></span>
-		</ul>
+        <li class="layui-nav-item">
+            <a href="index.html"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="article.html"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="mixed_pic.html"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="timeline.html"><i class="fa fa-road fa-fw"></i>&nbsp;点点滴滴</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="about.html"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+        </li>
+        <span class="layui-nav-bar"></span>
+    </ul>
 
     <!--分享窗体-->
     <div class="blog-share layui-hide">
@@ -107,16 +114,49 @@
             </div>
         </div>
     </div>
-    
-    <!--遮罩-->
-    <div class="blog-mask animated layui-hide"></div>
-	<!-- jquery -->
-	<script src="js/jquery.min.js"></script>
-    <!-- layui.js -->
-    <script src="layui/layui.js"></script>
-    <!-- 全局脚本 -->
-    <script src="js/global.js"></script>
-    <!-- 本页脚本 -->
-    <script src="js/mixed_pic.js"></script>
+</div>
+<!--遮罩-->
+<div class="blog-mask animated layui-hide"></div>
+<!-- jquery -->
+<script src="js/jquery.min.js"></script>
+<!-- layui.js -->
+<script src="layui/layui.js"></script>
+<!-- 全局脚本 -->
+<script src="js/global.js"></script>
+<!-- 本页脚本 -->
+<script src="js/mixed_pic.js"></script>
 </body>
+
+<script>
+    app = new Vue({
+        el: "#app",
+        data: {},
+        dataAll: [],
+        pageSize: 10,
+        pageNum: 1,
+        created() {
+            this.getDataAll(this.pageSize, this.pageNum)
+        },
+        mounted() {
+
+        },
+        methods: {
+            getDataAll(pageSize, pageNum) {
+                axios({
+                    method: 'GET',
+                    url: getHost()+'/rest/home/getDataAll?type=1&pageSize=' + pageSize + "&pageNum=" + pageNum,
+                    responseType: 'json',
+                    data: {}
+                })
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            },
+        }
+    })
+</script>
+
 </html>
