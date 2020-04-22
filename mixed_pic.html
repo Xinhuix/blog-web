@@ -16,7 +16,9 @@
     <!-- 本页样式表 -->
     <link href="css/mixed.css" rel="stylesheet"/>
     <script src="js/vue.js"></script>
+<!--
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+-->
     <script src="config/config.js"></script>
 
 
@@ -34,7 +36,7 @@
                 <i class="fa fa-qq"></i>
             </a>
 
-            <a class="blog-logo" href="index.html">Xinhxu</a>
+            <a class="blog-logo" href="index.html">隐约雷鸣</a>
 
             <ul class="layui-nav" lay-filter="nav">
                 <li class="layui-nav-item">
@@ -125,7 +127,8 @@
 <script src="layui/layui.js"></script>
 <!-- 全局脚本 -->
 <script src="js/global.js"></script>
-
+<!-- 本页脚本 -->
+<script src="js/mixed_pic.js"></script>
 </body>
 
 <script>
@@ -142,28 +145,25 @@
         },
         methods: {
             getDataAll(pageSize, pageNum) {
-                axios({
+               $.ajax({
                     method: 'GET',
                     url: getHost()+'/rest/home/getDataAll?type=1&pageSize=' + pageSize + "&pageNum=" + pageNum,
                     responseType: 'json',
-                    data: {}
-                })
-                    .then((response) => {
-                        response.data.data.forEach(item =>{
-                                 pics.data.push(item)
-                                 this.skr.push(item)
-                         })
-                        console.log(this.skr);
+                    data: {},
+                    async: false,
+                   success:function (data) {
+                        for(i=0;i<data.data.length;i++){
+                            pics.data.push(data.data[i])
+                        }
+                   },
+                   error:function (error) {
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                   }
+                })
             },
         }
     })
 </script>
-<!-- 本页脚本 -->
-<script src="js/mixed_pic.js"></script>
+
 
 </html>

@@ -1,21 +1,19 @@
 var pics = {
-  data: [
+  "data": [
 
   ],
-  address: getImageBaseUrl(),
 };
 layui.use(['jquery','flow'], function () {
 	var $ = layui.jquery;
 	// 流加载 图片
     var flow = layui.flow;
     var count = pics.data.length-1;
-
-    console.log(pics.data[0]);
-    console.log(pics.data);
+    console.log(123);
+    console.log(pics.data[1]);
     flow.load({
     	elem: '.mixed-main', //流加载容器
     	isAuto: true,
-		//address: getImageBaseUrl(),
+		address: getImageBaseUrl(),
     	end: '没有更多的图片了~QAQ',
     	  done: function(page,next) {
             var lis = [];
@@ -33,14 +31,15 @@ layui.use(['jquery','flow'], function () {
 	                    '</div>',
 	                '</div>');
     			} else {
+                    console.log(count);
                     lis.push('<div class="mixed shadow animated zoomIn">'+
 	                    '<div class="mixed-pic">'+
-	                        '<a href="javascript:view('+count+')"><img src="'+'http://182.92.169.183:80/download/'+pics.data[count].img+'" alt="'+pics.data[count].content+'" /></a>'+
+	                        '<a href="javascript:view('+count+')"><img src="'+this.address+pics.data[count].img+'" alt="'+pics.data[count].content+'" /></a>'+
 	                    '</div>'+
 	                    '<div class="mixed-info">'+pics.data[count].content+'</div>'+
 	                    '<div class="mixed-footer">'+
 	                        '<a class="layui-btn layui-btn-small layui-btn-primary" href="javascript:view('+count+')"><i class="fa fa-eye fa-fw"></i>查看</a>'+
-	                        '<a class="layui-btn layui-btn-small layui-btn-primary" href="http://182.92.169.183:80/download/'+pics.data[count].img+'"><i class="fa fa-download fa-fw"></i>下载</a>'+
+	                        '<a class="layui-btn layui-btn-small layui-btn-primary" href="'+this.address+pics.data[count].img+'"><i class="fa fa-download fa-fw"></i>下载</a>'+
 	                    '</div>',
 	                '</div>');
     			}
