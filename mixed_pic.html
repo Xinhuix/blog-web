@@ -136,7 +136,7 @@
         el: "#app",
         data: {
             pageSize: 10,
-            pageNum: 1,
+            pageNum: -1,
             skr:[]
         },
         dataAll: [],
@@ -153,6 +153,7 @@
                     async: false,
                    success:function (data) {
                         for(i=0;i<data.data.length;i++){
+                            data.data[i].src=getImageBaseUrl()+data.data[i].src;
                             pics.data.push(data.data[i])
                         }
                    },
