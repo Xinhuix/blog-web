@@ -7,7 +7,7 @@ function getServerAddress(){
 }
 
 function getImageBaseUrl(){
-    return "http://182.92.169.183:80/download";
+    return "http://182.92.169.183:80/download/";
 }
 
 function appVersion(){

@@ -125,22 +125,20 @@
 <script src="layui/layui.js"></script>
 <!-- 全局脚本 -->
 <script src="js/global.js"></script>
-<!-- 本页脚本 -->
-<script src="js/mixed_pic.js"></script>
+
 </body>
 
 <script>
     app = new Vue({
         el: "#app",
-        data: {},
+        data: {
+            pageSize: 10,
+            pageNum: 1,
+            skr:[]
+        },
         dataAll: [],
-        pageSize: 10,
-        pageNum: 1,
         created() {
             this.getDataAll(this.pageSize, this.pageNum)
-        },
-        mounted() {
-
         },
         methods: {
             getDataAll(pageSize, pageNum) {
@@ -151,7 +149,12 @@
                     data: {}
                 })
                     .then((response) => {
-                        console.log(response);
+                        response.data.data.forEach(item =>{
+                                 pics.data.push(item)
+                                 this.skr.push(item)
+                         })
+                        console.log(this.skr);
+
                     })
                     .catch((error) => {
                         console.log(error);
@@ -160,5 +163,7 @@
         }
     })
 </script>
+<!-- 本页脚本 -->
+<script src="js/mixed_pic.js"></script>
 
 </html>

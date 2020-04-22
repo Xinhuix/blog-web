@@ -1,19 +1,24 @@
 var pics = {
-  "data": [
-      {"src": "images/pic/1.jpg",   "alt": "紫霞仙子和至尊宝",},
-      {"src": "images/pic/2.jpg",   "alt": "紫霞仙子"}
-   ]};
+  data: [
+
+  ],
+  address: getImageBaseUrl(),
+};
 layui.use(['jquery','flow'], function () {
 	var $ = layui.jquery;
 	// 流加载 图片
     var flow = layui.flow;
     var count = pics.data.length-1;
+
+    console.log(pics.data[0]);
+    console.log(pics.data);
     flow.load({
     	elem: '.mixed-main', //流加载容器
     	isAuto: true,
+		//address: getImageBaseUrl(),
     	end: '没有更多的图片了~QAQ',
-    	done: function(page,next) {
-    		var lis = [];
+    	  done: function(page,next) {
+            var lis = [];
     		for (var i=0; i<8; i++) {
     			if (count < -1) break;
     			if (count==-1) {
@@ -28,14 +33,14 @@ layui.use(['jquery','flow'], function () {
 	                    '</div>',
 	                '</div>');
     			} else {
-	    			lis.push('<div class="mixed shadow animated zoomIn">'+
+                    lis.push('<div class="mixed shadow animated zoomIn">'+
 	                    '<div class="mixed-pic">'+
-	                        '<a href="javascript:view('+count+')"><img src="'+pics.data[count].src+'" alt="'+pics.data[count].alt+'" /></a>'+
+	                        '<a href="javascript:view('+count+')"><img src="'+'http://182.92.169.183:80/download/'+pics.data[count].img+'" alt="'+pics.data[count].content+'" /></a>'+
 	                    '</div>'+
-	                    '<div class="mixed-info">'+pics.data[count].alt+'</div>'+
+	                    '<div class="mixed-info">'+pics.data[count].content+'</div>'+
 	                    '<div class="mixed-footer">'+
 	                        '<a class="layui-btn layui-btn-small layui-btn-primary" href="javascript:view('+count+')"><i class="fa fa-eye fa-fw"></i>查看</a>'+
-	                        '<a class="layui-btn layui-btn-small layui-btn-primary" href="pic/down.do?path='+pics.data[count].src+'"><i class="fa fa-download fa-fw"></i>下载</a>'+
+	                        '<a class="layui-btn layui-btn-small layui-btn-primary" href="http://182.92.169.183:80/download/'+pics.data[count].img+'"><i class="fa fa-download fa-fw"></i>下载</a>'+
 	                    '</div>',
 	                '</div>');
     			}
@@ -47,7 +52,7 @@ layui.use(['jquery','flow'], function () {
 });
 function view(start) {
 	pics.start = start;
-	layer.photos({photos: pics });	
+	layer.photos({photos: pics });
 }
 
     $(function () {
